@@ -4,11 +4,9 @@ import com.nilin.model.User;
 import com.nilin.services.userservice.UserService;
 import com.nilin.util.CustomErrorType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -20,17 +18,14 @@ public class UserController {
 
     // -------------------Create a User-------------------------------------------
     @RequestMapping(value = "/user/save", method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<?> createUser(@RequestBody User user) {
 
         if (userService.isUserExist(user)) {
             return new ResponseEntity<>(new CustomErrorType("Unable to create. A User with name " +
                     user.getUsername() + " already exist."), HttpStatus.CONFLICT);
         }
         userService.save(user);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<String>(HttpStatus.CREATED);
     }
 
     // -------------------Retrieve All Users---------------------------------------------
@@ -56,7 +51,7 @@ public class UserController {
     }
 
     // ------------------- Delete a User-----------------------------------------
-    @RequestMapping(value = "/user/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteUser(@PathVariable("id") long id) {
 
         User user = userService.findAllById(id);
@@ -74,7 +69,6 @@ public class UserController {
         userService.deleteAllUsers();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
     // ------------------- Update a User ------------------------------------------------
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
