@@ -27,12 +27,6 @@ public class ProfileController {
         LocalDate a = LocalDate.of(2014, 6, 30);
         Profile blackImage = new Profile(1L, "java", "picNilin", a, "jpeg", arrayPic);
 
-        /*// image 2
-        ClassPathResource blueImgFile = new ClassPathResource("image/jsa_about_img_blue_background.png");
-        arrayPic = new byte[(int) blueImgFile.contentLength()];
-        blueImgFile.getInputStream().read(arrayPic);
-        Profile blueImage = new Profile(2, "JSA-ABOUT-IMAGE-BLUE-BACKGROUND", "png", arrayPic);*/
-
         // store image to MySQL via SpringJPA
         profileRepository.save(blackImage);
         //profileRepository.save(blueImage);
