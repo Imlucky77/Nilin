@@ -1,5 +1,6 @@
 package com.nilin.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(View.FileInfo.class)
     private Long id;
 
     @Column(name = "FIRST_NAME")
@@ -33,8 +35,13 @@ public class Profile {
     @Column(name = "PICTURE")
     private byte[] pic;
 
-    public Profile(Long id, String firstName, String lastName, LocalDate birthday, String type, byte[] pic) {
-        this.id = id;
+    public Profile(String name, String type, byte[] pic) {
+        this.firstName = name;
+        this.type = type;
+        this.pic = pic;
+    }
+
+    public Profile(String firstName, String lastName, LocalDate birthday, String type, byte[] pic) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;

@@ -2,6 +2,7 @@ package com.nilin.web.profilecontroller;
 
 import com.nilin.model.Profile;
 import com.nilin.repositories.profilerepository.ProfileRepository;
+import com.nilin.services.profileservice.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +16,9 @@ import java.time.LocalDate;
 public class ProfileController {
 
     @Autowired
-    ProfileRepository profileRepository;
+    ProfileService service;
 
-    @PostMapping("/image")
+    /*@PostMapping("/image")
     public void run() throws Exception {
         // image 1
         ClassPathResource backImgFile = new ClassPathResource("/image/java.jpeg");
@@ -35,5 +36,5 @@ public class ProfileController {
         for (Profile imageModel : profileRepository.findAll()) {
             Files.write(Paths.get("/home/imlucky/Downloads/Nilin/src/main/resources/retrieve-dir/" + imageModel.getFirstName() + "." + imageModel.getType()), imageModel.getPic());
         }
-    }
+    }*/
 }
