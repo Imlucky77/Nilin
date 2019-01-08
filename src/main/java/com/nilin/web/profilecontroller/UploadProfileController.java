@@ -20,12 +20,13 @@ public class UploadProfileController {
      * MultipartFile Upload
      */
     @PostMapping("/api/file/uploads")
-    public String uploadMultipartFile(@RequestParam("uploadfile") MultipartFile file) {
+    public String uploadMultipartFile(@RequestParam("uploadfile") MultipartFile file, Profile profile) {
         try {
             // save file to PostgreSQL
             //Profile filemode = new Profile(file.getOriginalFilename(), file.getContentType(), file.getBytes());
-            LocalDate date = LocalDate.of(2019, 01, 07);
-            Profile filemode = new Profile("profile", "imlucky", date, file.getContentType(), file.getBytes());
+            LocalDate birthday = profile.getBirthday();
+            Profile filemode = new Profile(profile.getFirstName(), profile.getLastName(),
+                    birthday, profile.getType(), file.getBytes());
             repository.save(filemode);
             return "File uploaded successfully! -> filename = " + file.getOriginalFilename();
         } catch (Exception e) {

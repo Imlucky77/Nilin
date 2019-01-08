@@ -17,7 +17,7 @@ public class UserController {
     private UserService userService;
 
     // -------------------Create a User-------------------------------------------
-    @RequestMapping(value = "/user/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/users", method = RequestMethod.POST)
     public ResponseEntity<?> createUser(@RequestBody User user) {
 
         if (userService.isUserExist(user)) {
@@ -29,7 +29,7 @@ public class UserController {
     }
 
     // -------------------Retrieve All Users---------------------------------------------
-    @RequestMapping(value = "/user/getAll", method = RequestMethod.GET)
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ResponseEntity<List<User>> listAllUsers() {
         List<User> users = userService.findAllUsers();
         if (users.isEmpty()) {
@@ -40,8 +40,8 @@ public class UserController {
 
     // -------------------Retrieve Single User------------------------------------------
 
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getUser(@PathVariable("id") long id) {
+    @RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
+    public ResponseEntity<?> getUser(@PathVariable("userId") long id) {
         User user = userService.findAllById(id);
         if (user == null) {
             return new ResponseEntity<>(new CustomErrorType("User with id " + id
@@ -50,9 +50,16 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    // ------------------- Delete All Users-----------------------------
+    @RequestMapping(value = "/users", method = RequestMethod.DELETE)
+    public ResponseEntity<User> deleteAllUsers() {
+        userService.deleteAllUsers();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     // ------------------- Delete a User-----------------------------------------
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteUser(@PathVariable("id") long id) {
+    @RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteUser(@PathVariable("userId") long id) {
 
         User user = userService.findAllById(id);
         if (user == null) {
@@ -63,16 +70,9 @@ public class UserController {
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
 
-    // ------------------- Delete All Users-----------------------------
-    @RequestMapping(value = "/user/delete", method = RequestMethod.DELETE)
-    public ResponseEntity<User> deleteAllUsers() {
-        userService.deleteAllUsers();
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
     // ------------------- Update a User ------------------------------------------------
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody User user) {
+    @RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateUser(@PathVariable("userId") long id, @RequestBody User user) {
 
         User currentUser = userService.findAllById(id);
 
@@ -86,6 +86,4 @@ public class UserController {
         userService.updateUser(currentUser);
         return new ResponseEntity<>(currentUser, HttpStatus.OK);
     }
-
-
 }

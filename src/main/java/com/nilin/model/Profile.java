@@ -3,6 +3,7 @@ package com.nilin.model;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ public class Profile {
     private String lastName;
 
     @Column(name = "BIRTH_DAY")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
     @Column(name = "TYPE")
@@ -35,11 +37,11 @@ public class Profile {
     @Column(name = "PICTURE")
     private byte[] pic;
 
-    public Profile(String name, String type, byte[] pic) {
+    /*public Profile(String name, String type, byte[] pic) {
         this.firstName = name;
         this.type = type;
         this.pic = pic;
-    }
+    }*/
 
     public Profile(String firstName, String lastName, LocalDate birthday, String type, byte[] pic) {
         this.firstName = firstName;
