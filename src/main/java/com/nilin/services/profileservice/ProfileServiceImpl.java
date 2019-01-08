@@ -6,13 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
 
     @Autowired
-    ProfileRepository repository;
+    private ProfileRepository repository;
+
+    @Override
+    public void save(Profile profile) {
+        repository.save(profile);
+    }
 
     @Override
     public Profile findByFirstName(String name) {
@@ -25,7 +29,12 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Optional<Profile> findById(Long id) {
-        return repository.findById(id);
+    public Profile findAllById(Long id) {
+        return repository.findAllById(id);
+    }
+
+    @Override
+    public void updateProfile(Profile profile) {
+        save(profile);
     }
 }
