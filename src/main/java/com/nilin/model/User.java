@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "USER")
@@ -19,4 +20,8 @@ public class User {
 
     @Column(name = "PASSWORD")
     private String password;
+
+    @OneToMany
+    @Column(name = "ALBUMS")
+    private List<Album> albums;
 }
