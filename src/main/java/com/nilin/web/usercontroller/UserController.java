@@ -20,10 +20,10 @@ public class UserController {
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public ResponseEntity<?> createUser(@RequestBody User user) {
 
-        if (userService.isUserExist(user)) {
+        /*if (userService.isUserExist(user)) {
             return new ResponseEntity<>(new CustomErrorType("Unable to create. A User with name " +
                     user.getUsername() + " already exist."), HttpStatus.CONFLICT);
-        }
+        }*/
         userService.save(user);
         return new ResponseEntity<String>(HttpStatus.CREATED);
     }

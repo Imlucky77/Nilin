@@ -5,14 +5,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "ALBUM")
 public class Album {
 
     @Column(name = "Title")
@@ -22,12 +21,12 @@ public class Album {
     @Column(name = "CREATED")
     private LocalDate created;
 
-    @ManyToOne
+   /* @ManyToOne
     @Column(name = "USER")
-    private User user;
+    private User user;*/
 
-    @OneToMany
+   /* @OneToMany
     @Column(name = "PHOTOS")
-    private List<Photo> photos;
+    private List<Photo> photos;*/
 
 }
