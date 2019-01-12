@@ -3,14 +3,18 @@ package com.nilin.services.userservice;
 import com.nilin.model.User;
 import com.nilin.repositories.userrepository.UserRepository;
 import com.nilin.util.CustomErrorType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -20,11 +24,6 @@ public class UserServiceImpl implements UserService {
     private UserService userService;
 
     public void save(User username) {
-
-        if (userService.isUserExist(username)) {
-            new CustomErrorType("Unable to create. A User with name " +
-                    username.getUsername() + " already exist.");
-        }
         userRepository.save(username);
     }
 
@@ -57,6 +56,5 @@ public class UserServiceImpl implements UserService {
     public boolean isUserExist(User user) {
         return findByUsername(user.getUsername()) != null;
     }
-
 
 }

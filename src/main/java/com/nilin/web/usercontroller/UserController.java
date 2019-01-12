@@ -19,11 +19,10 @@ public class UserController {
     // -------------------Create a User-------------------------------------------
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public ResponseEntity<?> createUser(@RequestBody User user) {
-
-        /*if (userService.isUserExist(user)) {
-            return new ResponseEntity<>(new CustomErrorType("Unable to create. A User with name " +
-                    user.getUsername() + " already exist."), HttpStatus.CONFLICT);
-        }*/
+        if (userService.isUserExist(user)) {
+            return new ResponseEntity<>("Unable to create. A User with name " +
+                    user.getUsername() + " already exist.", HttpStatus.CONFLICT);
+        }
         userService.save(user);
         return new ResponseEntity<String>(HttpStatus.CREATED);
     }
@@ -44,8 +43,8 @@ public class UserController {
     public ResponseEntity<?> getUser(@PathVariable("userId") long id) {
         User user = userService.findAllById(id);
         if (user == null) {
-            return new ResponseEntity<>(new CustomErrorType("User with id " + id
-                    + " not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User with id " + id
+                    + " not found", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -63,7 +62,7 @@ public class UserController {
 
         User user = userService.findAllById(id);
         if (user == null) {
-            return new ResponseEntity<>(new CustomErrorType("Unable to delete. User with id " + id + " not found."),
+            return new ResponseEntity<>("Unable to delete. User with id " + id + " not found.",
                     HttpStatus.NOT_FOUND);
         }
         userService.deleteUserById(id);
@@ -77,7 +76,7 @@ public class UserController {
         User currentUser = userService.findAllById(id);
 
         if (currentUser == null) {
-            return new ResponseEntity<>(new CustomErrorType("Unable to update. User with id " + id + " not found."),
+            return new ResponseEntity<>("Unable to update. User with id " + id + " not found.",
                     HttpStatus.NOT_FOUND);
         }
 

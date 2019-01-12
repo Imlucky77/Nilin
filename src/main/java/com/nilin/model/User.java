@@ -21,7 +21,7 @@ public class User {
     @Column(name = "PASSWORD")
     private String password;
 
-    /*@OneToMany
+    @OneToMany
     @Column(name = "ALBUMS")
-    private List<Album> albums;*/
+    private List<Album> albums;
 }

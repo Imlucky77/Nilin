@@ -8,10 +8,10 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "PROFILE")
+@Table(name = "Client")
 @Data
 @NoArgsConstructor
-public class Profile {
+public class Client {
 
 
     @Id
@@ -28,13 +28,19 @@ public class Profile {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
+    @Column(name = "MOBILE")
+    private String mobile;
+
+    @Column(name = "EMAIL_ADDRESS")
+    private String email;
+
     @Column(name = "TYPE")
     private String type;
 
     @Column(name = "PICTURE")
     private byte[] pic;
 
-    public Profile(String firstName, String lastName, LocalDate birthday, String type, byte[] pic) {
+    public Client(String firstName, String lastName, LocalDate birthday, String type, byte[] pic) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;

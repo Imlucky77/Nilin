@@ -1,18 +1,19 @@
-/*package com.nilin.model;
+package com.nilin.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Data
 @NoArgsConstructor
 @Table(name = "PHOTO")
 public class Photo {
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     @Column(name = "Title")
     private String title;
@@ -21,4 +22,4 @@ public class Photo {
 
     @ManyToOne
     private Album album;
-}*/
+}
