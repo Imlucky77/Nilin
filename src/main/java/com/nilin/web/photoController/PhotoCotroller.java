@@ -3,78 +3,37 @@ package com.nilin.web.photoController;
 import com.nilin.model.Photo;
 import com.nilin.services.photoservice.PhotoService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.UUID;
 
 @RestController
 @Slf4j
 public class PhotoCotroller {
 
+    @Autowired
     private PhotoService photoService;
-    private Path rootLocation;
 
-    public PhotoCotroller(PhotoService photoService, Path rootLocation) {
-        this.photoService = photoService;
-        this.rootLocation = rootLocation;
-    }
 
-    @GetMapping("/files/{filename:.+}")
-    @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable String filename) throws MalformedURLException {
+    @RequestMapping(value = "/doUpload", method = RequestMethod.POST)
+    public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile[] fileUpload, Photo photo) throws Exception {
 
-        Path file = this.rootLocation.resolve(filename);
-        Resource resource = new UrlResource(file.toUri());
+        if (fileUpload != null && fileUpload.length > 0) {
+            for (MultipartFile aFile : fileUpload) {
 
-        return ResponseEntity
-                .ok()
-                .body(resource);
-    }
+                System.out.println("Saving file: " + aFile.getOriginalFilename());
 
-    @PostMapping(value = "/photo")
-    public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file, Photo photo) throws Exception {
-
-        if (file.getSize() == 0) {
-            return new ResponseEntity<>("File size is empty ", HttpStatus.NO_CONTENT);
+                photo.setName(aFile.getOriginalFilename());
+                photo.setData(aFile.getBytes());
+                photo.setDescription(photo.getDescription());
+                photoService.save(photo);
+            }
         }
-
-        String uuid = UUID.randomUUID().toString();
-
-        String imagePath = this.rootLocation.resolve(uuid + ".jpg").toString();
-        Files.copy(file.getInputStream(), this.rootLocation.resolve(imagePath));
-
-        photoService.save(photo);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-    /*@PostMapping("/")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes,
-                                   Principal principal) throws Exception {
-
-        if (file.getSize() == 0) {
-            return "redirect:/";
-        }
-
-        String uuid = UUID.randomUUID().toString();
-
-        String imagePath = this.rootLocation.resolve(uuid + ".jpg").toString();
-
-        SiteUser user = userRepository.findByName(principal.getName()).orElseThrow(Exception::new);
-
-        Set<Image> stringList = user.getImageList();
-        stringList.add(new Image(imagePath));
-        Files.copy(file.getInputStream(), this.rootLocation.resolve(imagePath));
-
-        userRepository.save(user);
-
-        return "redirect:/";
-    }*/
 }
