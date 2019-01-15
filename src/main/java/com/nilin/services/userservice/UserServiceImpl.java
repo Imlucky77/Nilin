@@ -1,12 +1,9 @@
 package com.nilin.services.userservice;
 
-import com.nilin.model.User;
+import com.nilin.model.Users;
 import com.nilin.repositories.userrepository.UserRepository;
-import com.nilin.util.CustomErrorType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,25 +20,25 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserService userService;
 
-    public void save(User username) {
+    public void save(Users username) {
         userRepository.save(username);
     }
 
-    public List<User> findAllUsers() {
+    public List<Users> findAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public User findAllById(Long id) {
+    public Users findAllById(Long id) {
         return userRepository.findAllById(id);
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Users findByName(String username) {
+        return userRepository.findByName(username);
     }
 
-    public void updateUser(User username) {
+    public void updateUser(Users username) {
         save(username);
     }
 
@@ -53,8 +50,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteAll();
     }
 
-    public boolean isUserExist(User user) {
-        return findByUsername(user.getUsername()) != null;
+    public boolean isUserExist(Users user) {
+        return findByName(user.getName()) != null;
     }
-
 }

@@ -3,7 +3,10 @@ package com.nilin.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Data
@@ -15,11 +18,9 @@ public class Photo {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "Title")
-    private String title;
-    @Column(name = "DESCRIPTION")
-    private String description;
+    private String name;
 
-    @ManyToOne
-    private Album album;
+    public Photo(String name) {
+        this.name = name;
+    }
 }

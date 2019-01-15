@@ -2,19 +2,20 @@ package com;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.batch.BatchAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication(exclude = BatchAutoConfiguration.class)
-public class NilinApplication extends SpringBootServletInitializer {
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(NilinApplication.class);
-    }
+@SpringBootApplication
+public class NilinApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(NilinApplication.class, args);
+    }
+
+    @Bean
+    Path path() {
+        return Paths.get(System.getProperty("java.io.tmpdir"));
     }
 }

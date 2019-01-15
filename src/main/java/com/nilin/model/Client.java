@@ -34,17 +34,13 @@ public class Client {
     @Column(name = "EMAIL_ADDRESS")
     private String email;
 
-    @Column(name = "TYPE")
-    private String type;
-
     @Column(name = "PICTURE")
     private byte[] pic;
 
-    public Client(String firstName, String lastName, LocalDate birthday, String type, byte[] pic) {
+    public Client(String firstName, String lastName, LocalDate birthday, byte[] pic) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
-        this.type = type;
         this.pic = pic;
     }
 }

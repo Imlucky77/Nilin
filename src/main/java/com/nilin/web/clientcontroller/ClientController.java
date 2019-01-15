@@ -28,7 +28,7 @@ public class ClientController {
             //Client filemode = new Client(file.getOriginalFilename(), file.getContentType(), file.getBytes());
             LocalDate birthday = client.getBirthday();
             Client profileMode = new Client(client.getFirstName(), client.getLastName(),
-                    birthday, client.getType(), file.getBytes());
+                    birthday, file.getBytes());
             service.save(profileMode);
             return "File uploaded successfully! -> filename = " + file.getOriginalFilename();
         } catch (Exception e) {
