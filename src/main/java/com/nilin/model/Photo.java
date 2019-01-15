@@ -2,6 +2,7 @@ package com.nilin.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 
@@ -20,6 +21,7 @@ public class Photo {
     private String description;
 
     @Lob
+    //private MultipartFile[] data;
     private byte[] data;
 
     public Photo(String name) {

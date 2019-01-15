@@ -19,6 +19,46 @@ public class PhotoCotroller {
     @Autowired
     private PhotoService photoService;
 
+    /*@RequestMapping(value = "/doUpload", method = RequestMethod.POST)
+    public ResponseEntity<?> handleFileUpload(HttpServletRequest request, @RequestParam("file") MultipartFile[] fileUpload, Photo photo) throws Exception {
+
+        photo.setDescription(photo.getDescription());
+        String uploadRootPath = request.getServletContext().getRealPath("upload");
+        File uploadRootDir = new File(uploadRootPath);
+
+        if (!uploadRootDir.exists()) {
+            uploadRootDir.mkdirs();
+        }
+
+        //MultipartFile[] fileDatas = photo.getData();
+
+        List<File> uploadedFiles = new ArrayList<>();
+        for (MultipartFile fileData : fileUpload) {
+
+            // Client File Name
+            String name = fileData.getOriginalFilename();
+            photo.setName(name);
+
+            if (name != null && name.length() > 0) {
+                try {
+                    // Create the file on server
+                    File serverFile = new File(uploadRootDir.getAbsolutePath() + File.separator + name);
+
+
+                    // Stream to write data to file in server.
+                    BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+                    stream.write(fileData.getBytes());
+                    stream.close();
+                    //
+                    uploadedFiles.add(serverFile);
+                } catch (Exception e) {
+                    System.out.println("Error Write file: " + name);
+                }
+            }
+        }
+        photoService.save(photo);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }*/
 
     @RequestMapping(value = "/doUpload", method = RequestMethod.POST)
     public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile[] fileUpload, Photo photo) throws Exception {

@@ -2,11 +2,13 @@ package com;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@EntityScan(basePackages = {"com.nilin.model"})
 @SpringBootApplication
 public class NilinApplication {
 

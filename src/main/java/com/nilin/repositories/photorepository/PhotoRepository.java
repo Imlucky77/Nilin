@@ -8,4 +8,6 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
     Photo findByName(String text);
 
     Photo findFirstByName(String text);
+
+
 }
