@@ -1,10 +1,17 @@
 package com.nilin.services.userservice;
 
-import com.nilin.model.Users;
+import com.nilin.model.User;
 import com.nilin.repositories.userrepository.UserRepository;
+import com.nilin.util.BusinessException;
+import com.nilin.util.CustomErrorType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -17,28 +24,38 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserService userService;
-
-    public void save(Users username) {
+    public void save(User username) {
         userRepository.save(username);
     }
 
-    public List<Users> findAllUsers() {
+    ///////
+    public User createUser(User user) {
+        if (isUserExist(user)) {
+            /*return new User("Unable to create. A User with name " +
+                    user.getUsername() + " already exist.");*/
+            throw new BusinessException( 400, "Unable to create. A User with name " +
+                    user.getUsername() + " already exist.");
+        }
+        return userRepository.save(user);
+    }
+
+    ////////
+
+    public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public Users findAllById(Long id) {
+    public User findAllById(Long id) {
         return userRepository.findAllById(id);
     }
 
     @Override
-    public Users findByName(String username) {
-        return userRepository.findByName(username);
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
-    public void updateUser(Users username) {
+    public void updateUser(User username) {
         save(username);
     }
 
@@ -50,7 +67,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteAll();
     }
 
-    public boolean isUserExist(Users user) {
-        return findByName(user.getName()) != null;
+    public boolean isUserExist(User user) {
+        return findByUsername(user.getUsername()) != null;
     }
 }

@@ -10,13 +10,14 @@ import java.util.Set;
 @Table(name = "USER")
 @Data
 @NoArgsConstructor
-public class Users {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(unique = true)
-    private String name;
+    private String username;
 
     @Column(name = "PASSWORD")
     private String password;
@@ -24,8 +25,12 @@ public class Users {
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Photo> photos;
 
-    public Users(String name, String password) {
-        this.name = name;
+    public User(String name, String password) {
+        this.username = name;
         this.password = password;
+    }
+
+    public User(String s) {
+        this.username = s;
     }
 }

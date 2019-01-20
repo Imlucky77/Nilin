@@ -29,7 +29,7 @@ public class HomeController {
 
         log.info("inputStream: " + inputStream);
         log.info("originalName: " + originalName);
-        log.info("name: " + name);
+        log.info("username: " + name);
         log.info("contentType: " + contentType);
         log.info("size: " + size);
 

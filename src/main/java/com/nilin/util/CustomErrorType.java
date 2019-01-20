@@ -1,6 +1,6 @@
 package com.nilin.util;
 
-public class CustomErrorType {
+public class CustomErrorType extends RuntimeException {
 
     private String errorMessage;
 

@@ -1,12 +1,12 @@
 package com.nilin.repositories.userrepository;
 
-import com.nilin.model.Users;
+import com.nilin.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<Users, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    Users findAllById(Long id);
+    User findAllById(Long id);
 
-    Users findByName(String name);
+    User findByUsername(String name);
 
 }

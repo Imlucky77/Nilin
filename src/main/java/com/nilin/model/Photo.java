@@ -20,9 +20,9 @@ public class Photo {
 
     private String description;
 
-    @Lob
+
     //private MultipartFile[] data;
-    private byte[] data;
+    private String data;
 
     public Photo(String name) {
         this.name = name;

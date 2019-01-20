@@ -12,14 +12,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @Slf4j
-public class PhotoCotroller {
+public class PhotoController {
 
     @Autowired
     private PhotoService photoService;
 
-    /*@RequestMapping(value = "/doUpload", method = RequestMethod.POST)
+    @RequestMapping(value = "/doUpload", method = RequestMethod.POST)
     public ResponseEntity<?> handleFileUpload(HttpServletRequest request, @RequestParam("file") MultipartFile[] fileUpload, Photo photo) throws Exception {
 
         photo.setDescription(photo.getDescription());
@@ -36,13 +43,13 @@ public class PhotoCotroller {
         for (MultipartFile fileData : fileUpload) {
 
             // Client File Name
-            String name = fileData.getOriginalFilename();
-            photo.setName(name);
+            String username = fileData.getOriginalFilename();
+            photo.setName(username);
 
-            if (name != null && name.length() > 0) {
+            if (username != null && username.length() > 0) {
                 try {
                     // Create the file on server
-                    File serverFile = new File(uploadRootDir.getAbsolutePath() + File.separator + name);
+                    File serverFile = new File(uploadRootDir.getAbsolutePath() + File.separator + username);
 
 
                     // Stream to write data to file in server.
@@ -51,16 +58,18 @@ public class PhotoCotroller {
                     stream.close();
                     //
                     uploadedFiles.add(serverFile);
+                    photo.setData(serverFile.getAbsolutePath());
                 } catch (Exception e) {
-                    System.out.println("Error Write file: " + name);
+                    System.out.println("Error Write file: " + username);
                 }
             }
+
         }
         photoService.save(photo);
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }*/
+    }
 
-    @RequestMapping(value = "/doUpload", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/doUpload", method = RequestMethod.POST)
     public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile[] fileUpload, Photo photo) throws Exception {
 
         if (fileUpload != null && fileUpload.length > 0) {
@@ -69,11 +78,12 @@ public class PhotoCotroller {
                 System.out.println("Saving file: " + aFile.getOriginalFilename());
 
                 photo.setName(aFile.getOriginalFilename());
+
                 photo.setData(aFile.getBytes());
                 photo.setDescription(photo.getDescription());
                 photoService.save(photo);
             }
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+    }*/
 }

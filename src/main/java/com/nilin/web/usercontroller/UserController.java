@@ -1,7 +1,9 @@
 package com.nilin.web.usercontroller;
 
-import com.nilin.model.Users;
+import com.nilin.model.User;
 import com.nilin.services.userservice.UserService;
+import com.nilin.util.BusinessException;
+import com.nilin.util.CustomErrorType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,71 +17,81 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // -------------------Create a Users-------------------------------------------
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@RequestBody Users user) {
+    // -------------------Create a User-------------------------------------------
+    /*@RequestMapping(value = "/users", method = RequestMethod.POST)
+    public ResponseEntity<?> createUser(@RequestBody User user) {
         if (userService.isUserExist(user)) {
-            return new ResponseEntity<>("Unable to create. A Users with name " +
-                    user.getName() + " already exist.", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Unable to create. A User with name " +
+                    user.getUsername() + " already exist.", HttpStatus.CONFLICT);
         }
         userService.save(user);
         return new ResponseEntity<String>(HttpStatus.CREATED);
+    }*/
+
+    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        try {
+            userService.createUser(user);
+            return new ResponseEntity<String>(HttpStatus.CREATED);
+        } catch (BusinessException e) {
+            return new ResponseEntity<>(e.getErrorMessage(), HttpStatus.valueOf(e.getStatus()));
+        }
     }
 
-    // -------------------Retrieve All Users---------------------------------------------
+    // -------------------Retrieve All User---------------------------------------------
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ResponseEntity<List<Users>> listAllUsers() {
-        List<Users> users = userService.findAllUsers();
+    public ResponseEntity<List<User>> listAllUsers() {
+        List<User> users = userService.findAllUsers();
         if (users.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    // -------------------Retrieve Single Users------------------------------------------
+    // -------------------Retrieve Single User------------------------------------------
 
     @RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
     public ResponseEntity<?> getUser(@PathVariable("userId") long id) {
-        Users user = userService.findAllById(id);
+        User user = userService.findAllById(id);
         if (user == null) {
-            return new ResponseEntity<>("Users with id " + id
+            return new ResponseEntity<>("User with id " + id
                     + " not found", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    // ------------------- Delete All Users-----------------------------
+    // ------------------- Delete All User-----------------------------
     @RequestMapping(value = "/users", method = RequestMethod.DELETE)
-    public ResponseEntity<Users> deleteAllUsers() {
+    public ResponseEntity<User> deleteAllUsers() {
         userService.deleteAllUsers();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // ------------------- Delete a Users-----------------------------------------
+    // ------------------- Delete a User-----------------------------------------
     @RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteUser(@PathVariable("userId") long id) {
 
-        Users user = userService.findAllById(id);
+        User user = userService.findAllById(id);
         if (user == null) {
-            return new ResponseEntity<>("Unable to delete. Users with id " + id + " not found.",
+            return new ResponseEntity<>("Unable to delete. User with id " + id + " not found.",
                     HttpStatus.NOT_FOUND);
         }
         userService.deleteUserById(id);
-        return new ResponseEntity<Users>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
 
-    // ------------------- Update a Users ------------------------------------------------
+    // ------------------- Update a User ------------------------------------------------
     @RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateUser(@PathVariable("userId") long id, @RequestBody Users user) {
+    public ResponseEntity<?> updateUser(@PathVariable("userId") long id, @RequestBody User user) {
 
-        Users currentUser = userService.findAllById(id);
+        User currentUser = userService.findAllById(id);
 
         if (currentUser == null) {
-            return new ResponseEntity<>("Unable to update. Users with id " + id + " not found.",
+            return new ResponseEntity<>("Unable to update. User with id " + id + " not found.",
                     HttpStatus.NOT_FOUND);
         }
 
-        currentUser.setName(user.getName());
+        currentUser.setUsername(user.getUsername());
 
         userService.updateUser(currentUser);
         return new ResponseEntity<>(currentUser, HttpStatus.OK);
