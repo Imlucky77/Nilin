@@ -1,26 +1,29 @@
 package com.nilin.services.userservice;
 
-import com.nilin.model.Users;
+import com.nilin.model.User;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
 
-    void save(Users username);
+    void save(User username);
 
-    List<Users> findAllUsers();
+    List<User> findAllUsers();
 
-    void updateUser(Users username);
+    void updateUser(User username);
 
-    Users findAllById(Long id);
+    User findAllById(Long id);
 
-    Users findByName(String username);
+    User findByUsername(String username);
 
     void deleteUserById(Long id);
 
     void deleteAllUsers();
 
-    boolean isUserExist(Users username);
+    boolean isUserExist(User username);
+
+    //
+    User createUser(User user);
 
 }
