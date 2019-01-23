@@ -17,17 +17,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // -------------------Create a User-------------------------------------------
-    /*@RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-        if (userService.isUserExist(user)) {
-            return new ResponseEntity<>("Unable to create. A User with name " +
-                    user.getUsername() + " already exist.", HttpStatus.CONFLICT);
-        }
-        userService.save(user);
-        return new ResponseEntity<String>(HttpStatus.CREATED);
-    }*/
-
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public ResponseEntity<?> createUser(@RequestBody User user) {
         try {
@@ -38,14 +27,14 @@ public class UserController {
         }
     }
 
-    // -------------------Retrieve All User---------------------------------------------
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> listAllUsers() {
-        List<User> users = userService.findAllUsers();
-        if (users.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> listAllUsers() {
+        try {
+            List<User> allUsers = userService.findAllUsers();
+            return new ResponseEntity<>(allUsers, HttpStatus.OK);
+        } catch (BusinessException e) {
+            return new ResponseEntity<>(e.getErrorMessage(), HttpStatus.valueOf(e.getStatus()));
         }
-        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     // -------------------Retrieve Single User------------------------------------------

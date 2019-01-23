@@ -68,22 +68,4 @@ public class PhotoController {
         photoService.save(photo);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-    /*@RequestMapping(value = "/doUpload", method = RequestMethod.POST)
-    public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile[] fileUpload, Photo photo) throws Exception {
-
-        if (fileUpload != null && fileUpload.length > 0) {
-            for (MultipartFile aFile : fileUpload) {
-
-                System.out.println("Saving file: " + aFile.getOriginalFilename());
-
-                photo.setName(aFile.getOriginalFilename());
-
-                photo.setData(aFile.getBytes());
-                photo.setDescription(photo.getDescription());
-                photoService.save(photo);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }*/
 }

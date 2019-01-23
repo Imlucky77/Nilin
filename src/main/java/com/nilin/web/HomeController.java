@@ -35,6 +35,6 @@ public class HomeController {
 
         // Do processing with uploaded file data in Service layer
 
-        return new ResponseEntity<String>(originalName, HttpStatus.OK);
+        return new ResponseEntity<>(originalName, HttpStatus.OK);
     }
 }

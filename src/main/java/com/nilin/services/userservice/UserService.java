@@ -1,15 +1,14 @@
 package com.nilin.services.userservice;
 
 import com.nilin.model.User;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface UserService {
 
-    void save(User username);
+    //void save(User username);
 
-    List<User> findAllUsers();
+
 
     void updateUser(User username);
 
@@ -25,5 +24,6 @@ public interface UserService {
 
     //
     User createUser(User user);
+    List<User> findAllUsers();
 
 }

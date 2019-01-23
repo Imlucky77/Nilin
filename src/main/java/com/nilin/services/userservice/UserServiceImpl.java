@@ -3,15 +3,9 @@ package com.nilin.services.userservice;
 import com.nilin.model.User;
 import com.nilin.repositories.userrepository.UserRepository;
 import com.nilin.util.BusinessException;
-import com.nilin.util.CustomErrorType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -24,24 +18,28 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     public void save(User username) {
         userRepository.save(username);
     }
 
-    ///////
     public User createUser(User user) {
         if (isUserExist(user)) {
-            /*return new User("Unable to create. A User with name " +
-                    user.getUsername() + " already exist.");*/
-            throw new BusinessException( 400, "Unable to create. A User with name " +
+            throw new BusinessException(400, "Unable to create. A User with name " +
                     user.getUsername() + " already exist.");
         }
         return userRepository.save(user);
     }
 
-    ////////
 
     public List<User> findAllUsers() {
+        List<User> users = userRepository.findAll();
+        if (users.isEmpty()) {
+            // I'm back 206 so I can print a message
+            throw new BusinessException(404, "There is nothing to return");
+        }
         return userRepository.findAll();
     }
 

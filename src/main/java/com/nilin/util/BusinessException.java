@@ -1,12 +1,11 @@
 package com.nilin.util;
 
-import lombok.Data;
 import lombok.Getter;
 
 @Getter
 public class BusinessException extends RuntimeException {
-    private String errorMessage;
-    private int status;
+    private final String errorMessage;
+    private final int status;
 
     public BusinessException(int status, String errorMessage) {
         super(errorMessage);

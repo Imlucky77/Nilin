@@ -19,8 +19,6 @@ public class Photo {
 
     private String description;
 
-
-    //private MultipartFile[] data;
     private String data;
 
     public Photo(String name) {
