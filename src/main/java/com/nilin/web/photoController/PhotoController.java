@@ -27,7 +27,7 @@ public class PhotoController {
     private PhotoService photoService;
 
     @RequestMapping(value = "/doUpload", method = RequestMethod.POST)
-    public ResponseEntity<?> handleFileUpload(HttpServletRequest request, @RequestParam("file") MultipartFile[] fileUpload, Photo photo) throws Exception {
+    public ResponseEntity<?> handleFileUpload(HttpServletRequest request, @RequestParam("file") MultipartFile[] fileUpload, Photo photo) {
 
         photo.setDescription(photo.getDescription());
         String uploadRootPath = request.getServletContext().getRealPath("upload");
@@ -36,8 +36,6 @@ public class PhotoController {
         if (!uploadRootDir.exists()) {
             uploadRootDir.mkdirs();
         }
-
-        //MultipartFile[] fileDatas = photo.getData();
 
         List<File> uploadedFiles = new ArrayList<>();
         for (MultipartFile fileData : fileUpload) {

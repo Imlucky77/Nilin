@@ -25,6 +25,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Photo> photos;
 
+    @OneToMany
+    private Set<Album> albums;
+
     public User(String name, String password) {
         this.username = name;
         this.password = password;

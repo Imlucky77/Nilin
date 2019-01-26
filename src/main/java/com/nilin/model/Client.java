@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Client")
+@Table(name = "CLIENT")
 @Data
 @NoArgsConstructor
 public class Client {
@@ -35,12 +35,13 @@ public class Client {
     private String email;
 
     @Column(name = "PICTURE")
-    private byte[] pic;
+    private String pic;
 
-    public Client(String firstName, String lastName, LocalDate birthday, byte[] pic) {
+    public Client(String firstName, String lastName, LocalDate birthday, String mobile, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
-        this.pic = pic;
+        this.mobile = mobile;
+        this.email = email;
     }
 }

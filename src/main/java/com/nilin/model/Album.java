@@ -14,11 +14,17 @@ public class Album {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "NAME")
+    private String name;
+
     @Column(name = "Title")
     private String title;
     @Column(name = "DESCRIPTION")
     private String description;
     @Column(name = "CREATED")
     private LocalDate created;
+
+    @ManyToOne
+    private User user;
 
 }

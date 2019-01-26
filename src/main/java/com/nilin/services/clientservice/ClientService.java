@@ -14,5 +14,6 @@ public interface ClientService {
 
     Client findAllById(Long id);
 
+
     void updateClient(Client client);
 }

@@ -9,7 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,30 +22,49 @@ public class ClientController {
     @Autowired
     private ClientService service;
 
-    /*
-     * MultipartFile Upload
-     */
     @PostMapping(value = "/clients")
-    public String saveClient(@RequestParam("uploadfile") MultipartFile file, Client client) {
-        try {
-            // save file to H2
-            //Client filemode = new Client(file.getOriginalFilename(), file.getContentType(), file.getBytes());
-            LocalDate birthday = client.getBirthday();
-            Client profileMode = new Client(client.getFirstName(), client.getLastName(),
-                    birthday, file.getBytes());
-            service.save(profileMode);
-            return "File uploaded successfully! -> filename = " + file.getOriginalFilename();
-        } catch (Exception e) {
-            return "FAIL! Maybe You had uploaded the file before or the file's size > 500KB";
-        }
-    }
+    public ResponseEntity<?> saveClient(HttpServletRequest request, @RequestParam("client") MultipartFile[] fileUpload, Client client) {
 
-    /*// -------------------Create a Client-------------------------------------------
-    @RequestMapping(value = "/profiles", method = RequestMethod.POST)
-    public ResponseEntity<?> createProfile(@RequestBody Client profile) {
-        service.save(profile);
-        return new ResponseEntity<String>(HttpStatus.CREATED);
-    }*/
+        client.setFirstName(client.getFirstName());
+        client.setLastName(client.getLastName());
+        client.setBirthday(client.getBirthday());
+        client.setMobile(client.getMobile());
+        client.setEmail(client.getEmail());
+        String uploadRootPath = request.getServletContext().getRealPath("upload");
+        File uploadRootDir = new File(uploadRootPath);
+
+        if (!uploadRootDir.exists()) {
+            uploadRootDir.mkdirs();
+        }
+
+        List<File> uploadedFiles = new ArrayList<>();
+        for (MultipartFile fileData : fileUpload) {
+
+            // Client File Name
+            String username = fileData.getOriginalFilename();
+
+            if (username != null && username.length() > 0) {
+                try {
+                    // Create the file on server
+                    File serverFile = new File(uploadRootDir.getAbsolutePath() + File.separator + username);
+
+
+                    // Stream to write data to file in server.
+                    try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile))) {
+                        stream.write(fileData.getBytes());
+                    }
+                    //
+                    uploadedFiles.add(serverFile);
+                    client.setPic(serverFile.getAbsolutePath());
+                } catch (Exception e) {
+                    System.out.println("Error Write file: " + username);
+                }
+            }
+
+        }
+        service.save(client);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
     // -------------------Retrieve All Clients---------------------------------------------
     @RequestMapping(value = "/clients", method = RequestMethod.GET)
@@ -64,26 +87,28 @@ public class ClientController {
         }
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
-/*
-    // ------------------- Update a Client ------------------------------------------------
-    @RequestMapping(value = "/profiles/{profileId}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateClient(@PathVariable("profileId") long id, @RequestBody Client profile) {
 
-        Client currentProfile = service.findByProfileId(id);
+  /*  // ------------------- Update a Client ------------------------------------------------
+    @RequestMapping(value = "/clients/{clientId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateClient(@PathVariable("clientId") long id,
+                                          @RequestBody Client client) {
 
-        if (currentProfile == null) {
+        Client currentClient = service.findAllById(id);
+
+        if (currentClient == null) {
             return new ResponseEntity<>(new CustomErrorType("Unable to update. Client with id " + id + " not found."),
                     HttpStatus.NOT_FOUND);
         }
 
-        currentProfile.setFirstName(profile.getFirstName());
-        currentProfile.setLastName(profile.getLastName());
-        currentProfile.setBirthday(profile.getBirthday());
-        currentProfile.setType(profile.getType());
-        currentProfile.setPic(profile.getPic());
+        currentClient.setFirstName(client.getFirstName());
+        currentClient.setLastName(client.getLastName());
+        currentClient.setBirthday(client.getBirthday());
+        currentClient.setMobile(client.getMobile());
+        currentClient.setEmail(client.getEmail());
+        currentClient.setPic(client.getPic());
 
-        service.updateClient(currentProfile);
-        return new ResponseEntity<>(currentProfile, HttpStatus.OK);
+        service.updateClient(currentClient);
+        return new ResponseEntity<>(currentClient, HttpStatus.OK);
     }*/
 
 }
