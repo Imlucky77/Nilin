@@ -3,6 +3,7 @@ package com.nilin.web.clientcontroller;
 import com.nilin.model.Client;
 import com.nilin.services.clientservice.ClientService;
 import com.nilin.util.CustomErrorType;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,13 +19,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Api(value = "Client Management System", description = "Operations pertaining to client in Client Management System")
 public class ClientController {
 
     @Autowired
     private ClientService service;
 
+    @ApiOperation(value = "Add an client")
     @PostMapping(value = "/clients")
-    public ResponseEntity<?> saveClient(HttpServletRequest request, @RequestParam("client") MultipartFile[] fileUpload, Client client) {
+    public ResponseEntity<?> saveClient(
+            @ApiParam(value = "Client object store in database table", required = true)
+            @Valid @RequestBody Client client,
+            HttpServletRequest request, @RequestParam("client") MultipartFile[] fileUpload) {
 
         client.setFirstName(client.getFirstName());
         client.setLastName(client.getLastName());
@@ -67,6 +74,13 @@ public class ClientController {
     }
 
     // -------------------Retrieve All Clients---------------------------------------------
+    @ApiOperation(value = "View a list of available clients", response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved list"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    })
     @RequestMapping(value = "/clients", method = RequestMethod.GET)
     public ResponseEntity<List<Client>> listAllClients() {
         List<Client> clients = service.findAll();
@@ -77,9 +91,10 @@ public class ClientController {
     }
 
     // -------------------Retrieve Single Client------------------------------------------
-
+    @ApiOperation(value = "Get an client by Id")
     @RequestMapping(value = "/clients/{clientId}", method = RequestMethod.GET)
-    public ResponseEntity<?> getClient(@PathVariable("clientId") long id) {
+    public ResponseEntity<?> getClient(@ApiParam(value = "Client id from which client object will retrieve", required = true)
+                                       @PathVariable("clientId") long id) {
         Client client = service.findAllById(id);
         if (client == null) {
             return new ResponseEntity<>(new CustomErrorType("Client with id " + id
