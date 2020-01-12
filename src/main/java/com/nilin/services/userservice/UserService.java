@@ -9,7 +9,6 @@ public interface UserService {
     //void save(User username);
 
 
-
     void updateUser(User username);
 
     User findAllById(Long id);
@@ -24,6 +23,7 @@ public interface UserService {
 
     //
     User createUser(User user);
+
     List<User> findAllUsers();
 
 }

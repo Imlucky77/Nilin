@@ -1,8 +1,9 @@
 package com.nilin.web.clientcontroller;
 
+import com.nilin.exception.BusinessException;
 import com.nilin.model.Client;
+import com.nilin.repositories.clientrepository.ClientRepository;
 import com.nilin.services.clientservice.ClientService;
-import com.nilin.util.CustomErrorType;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +26,10 @@ public class ClientController {
 
     @Autowired
     private ClientService service;
+    @Autowired
+    ClientRepository clientRepository;
 
-    @ApiOperation(value = "Add an client")
+    /*@ApiOperation(value = "Add an client")
     @PostMapping(value = "/clients")
     public ResponseEntity<?> saveClient(
             @ApiParam(value = "Client object store in database table", required = true)
@@ -71,7 +75,7 @@ public class ClientController {
         }
         service.save(client);
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+    }*/
 
     // -------------------Retrieve All Clients---------------------------------------------
     @ApiOperation(value = "View a list of available clients", response = List.class)
@@ -81,7 +85,7 @@ public class ClientController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    @RequestMapping(value = "/clients", method = RequestMethod.GET)
+    @GetMapping(value = "/clients")
     public ResponseEntity<List<Client>> listAllClients() {
         List<Client> clients = service.findAll();
         if (clients.isEmpty()) {
@@ -92,18 +96,18 @@ public class ClientController {
 
     // -------------------Retrieve Single Client------------------------------------------
     @ApiOperation(value = "Get an client by Id")
-    @RequestMapping(value = "/clients/{clientId}", method = RequestMethod.GET)
+    @GetMapping(value = "/clients/{clientId}")
     public ResponseEntity<?> getClient(@ApiParam(value = "Client id from which client object will retrieve", required = true)
                                        @PathVariable("clientId") long id) {
         Client client = service.findAllById(id);
         if (client == null) {
-            return new ResponseEntity<>(new CustomErrorType("Client with id " + id
+            return new ResponseEntity<>(new BusinessException("Client with id " + id
                     + " not found"), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
-  /*  // ------------------- Update a Client ------------------------------------------------
+    // ------------------- Update a Client ------------------------------------------------
     @RequestMapping(value = "/clients/{clientId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateClient(@PathVariable("clientId") long id,
                                           @RequestBody Client client) {
@@ -111,7 +115,7 @@ public class ClientController {
         Client currentClient = service.findAllById(id);
 
         if (currentClient == null) {
-            return new ResponseEntity<>(new CustomErrorType("Unable to update. Client with id " + id + " not found."),
+            return new ResponseEntity<>(new BusinessException("Unable to update. Client with id " + id + " not found."),
                     HttpStatus.NOT_FOUND);
         }
 
@@ -124,6 +128,15 @@ public class ClientController {
 
         service.updateClient(currentClient);
         return new ResponseEntity<>(currentClient, HttpStatus.OK);
-    }*/
+    }
+
+
+    @PostMapping("/clients")
+    public Client uploadImage(@RequestParam("file") MultipartFile file, Client client) throws IOException {
+        Client img = new Client(client.getFirstName(), client.getLastName(), client.getBirthday(),
+                client.getMobile(), client.getEmail());
+        final Client savedImage = clientRepository.save(img);
+        return savedImage;
+    }
 
 }

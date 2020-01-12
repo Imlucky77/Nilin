@@ -1,8 +1,8 @@
 package com.nilin.web.usercontroller;
 
+import com.nilin.exception.BusinessException;
 import com.nilin.model.User;
 import com.nilin.services.userservice.UserService;
-import com.nilin.util.BusinessException;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ public class UserController {
     private UserService userService;
 
     @ApiOperation(value = "Add a user")
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    @PostMapping(path = "/users")
     public ResponseEntity<?> createUser(
             @ApiParam(value = "User object store in database table", required = true) @Valid
             @RequestBody User user) {
@@ -28,7 +28,7 @@ public class UserController {
             userService.createUser(user);
             return new ResponseEntity<String>(HttpStatus.CREATED);
         } catch (BusinessException e) {
-            return new ResponseEntity<>(e.getErrorMessage(), HttpStatus.valueOf(e.getStatus()));
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.valueOf(e.getStatus()));
         }
     }
 
@@ -39,19 +39,19 @@ public class UserController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @GetMapping(value = "/users")
     public ResponseEntity<?> listAllUsers() {
         try {
             List<User> allUsers = userService.findAllUsers();
             return new ResponseEntity<>(allUsers, HttpStatus.OK);
         } catch (BusinessException e) {
-            return new ResponseEntity<>(e.getErrorMessage(), HttpStatus.valueOf(e.getStatus()));
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.valueOf(e.getStatus()));
         }
     }
 
     // -------------------Retrieve Single User------------------------------------------
     @ApiOperation(value = "Get a user by Id")
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
+    @GetMapping(value = "/users/{userId}")
     public ResponseEntity<?> getUser(
             @ApiParam(value = "User id from which user object will retrieve", required = true)
             @PathVariable("userId") long id) {
@@ -65,7 +65,7 @@ public class UserController {
 
     // ------------------- Delete All User-----------------------------
     @ApiOperation(value = "Delete all users")
-    @RequestMapping(value = "/users", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/users")
     public ResponseEntity<User> deleteAllUsers() {
         userService.deleteAllUsers();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -73,7 +73,7 @@ public class UserController {
 
     // ------------------- Delete a User-----------------------------------------
     @ApiOperation(value = "Delete a user by Id")
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/users/{userId}")
     public ResponseEntity<?> deleteUser(
             @ApiParam(value = "User Id from which user object will delete from database table", required = true)
             @PathVariable("userId") long id
@@ -90,7 +90,7 @@ public class UserController {
 
     // ------------------- Update a User ------------------------------------------------
     @ApiOperation(value = "Update a user by Id")
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT)
+    @PutMapping(value = "/users/{userId}")
     public ResponseEntity<?> updateUser(
             @ApiParam(value = "User Id to update user object", required = true) @PathVariable("userId") long id,
             @ApiParam(value = "Update user object", required = true) @Valid @RequestBody User user) {
@@ -103,6 +103,7 @@ public class UserController {
         }
 
         currentUser.setUsername(user.getUsername());
+        currentUser.setPassword(user.getPassword());
 
         userService.updateUser(currentUser);
         return new ResponseEntity<>(currentUser, HttpStatus.OK);

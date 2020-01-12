@@ -1,12 +1,12 @@
 package com.nilin.services.photoservice;
 
-import com.nilin.model.Photo;
-
 public interface PhotoService {
 
-    void save(Photo photo);
+/*    Photo save(Photo file);
 
-    Photo findByName(String text);
+    Photo findById(String fileId);*/
 
-    Photo findFirstByName(String text);
+    /*Photo findByName(String text);
+
+    Photo findFirstByName(String text);*/
 }

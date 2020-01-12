@@ -22,10 +22,11 @@ public class Swagger2Config {
                 .paths(PathSelectors.regex("/.*"))
                 .build().apiInfo(apiEndPointsInfo());
     }
+
     private ApiInfo apiEndPointsInfo() {
         return new ApiInfoBuilder().title("Spring Boot REST API")
                 .description("Management REST API")
-                .contact(new Contact("Im lucky", "www.javaguides.net", "ad.essential7@gmail.com"))
+                .contact(new Contact("Im lucky", "www.imlucky.com", "ad.essential7@gmail.com"))
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
                 .version("1.0.0")

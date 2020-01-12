@@ -5,15 +5,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "PHOTO")
+@Table(name = "photo")
 @ApiModel(description = "All details about the Photo. ")
 public class Photo {
 
@@ -25,13 +22,16 @@ public class Photo {
     @ApiModelProperty(notes = "The photo name")
     private String name;
 
-    @ApiModelProperty(notes = "The photo description")
-    private String description;
+    @ApiModelProperty(notes = "The type photo")
+    private String type;
 
     @ApiModelProperty(notes = "The photo data")
-    private String data;
+    @Lob
+    private byte[] pic;
 
-    public Photo(String name) {
+    public Photo(String name, String type, byte[] pic) {
         this.name = name;
+        this.type = type;
+        this.pic = pic;
     }
 }

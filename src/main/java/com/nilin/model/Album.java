@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-@Table(name = "ALBUM")
+@Table(name = "album")
 @ApiModel(description = "All details about the Album. ")
 public class Album {
 

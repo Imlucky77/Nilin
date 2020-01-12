@@ -1,8 +1,8 @@
 package com.nilin.services.userservice;
 
+import com.nilin.exception.BusinessException;
 import com.nilin.model.User;
 import com.nilin.repositories.userrepository.UserRepository;
-import com.nilin.util.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +17,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private UserService userService;
 
     public void save(User username) {
         userRepository.save(username);

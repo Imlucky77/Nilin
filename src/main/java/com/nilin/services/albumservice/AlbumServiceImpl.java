@@ -1,8 +1,8 @@
 package com.nilin.services.albumservice;
 
+import com.nilin.exception.BusinessException;
 import com.nilin.model.Album;
 import com.nilin.repositories.albumrepository.AlbumRepository;
-import com.nilin.util.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

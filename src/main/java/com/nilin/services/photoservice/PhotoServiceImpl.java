@@ -1,31 +1,36 @@
 package com.nilin.services.photoservice;
 
+import com.nilin.exception.BusinessException;
 import com.nilin.model.Photo;
 import com.nilin.repositories.photorepository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
+import java.io.IOException;
 
 @Service
-@Transactional
 public class PhotoServiceImpl implements PhotoService {
 
     @Autowired
     private PhotoRepository photoRepository;
 
-    @Override
-    public void save(Photo photo) {
-        photoRepository.save(photo);
-    }
+    public Photo storeFile(MultipartFile file) {
+        // Normalize file name
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-    @Override
-    public Photo findByName(String text) {
-        return photoRepository.findByName(text);
-    }
+        try {
+            // Check if the file's name contains invalid characters
+            if (fileName.contains("..")) {
+                throw new BusinessException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
 
-    @Override
-    public Photo findFirstByName(String text) {
-        return photoRepository.findFirstByName(text);
+            Photo dbFile = new Photo(fileName, file.getContentType(), file.getBytes());
+
+            return photoRepository.save(dbFile);
+        } catch (IOException ex) {
+            throw new BusinessException("Could not store file " + fileName + ". Please try again!", ex);
+        }
     }
 }

@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "CLIENT")
+@Table(name = "client")
 @Data
 @NoArgsConstructor
 @ApiModel(description = "All details about the Client. ")

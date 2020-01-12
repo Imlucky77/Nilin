@@ -12,6 +12,7 @@
 
 ### IntelliJ IDEA ###
 local.properties
+dev.yml
 .idea
 *.iws
 *.iml

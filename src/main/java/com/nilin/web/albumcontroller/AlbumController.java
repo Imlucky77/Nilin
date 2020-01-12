@@ -1,8 +1,8 @@
 package com.nilin.web.albumcontroller;
 
+import com.nilin.exception.BusinessException;
 import com.nilin.model.Album;
 import com.nilin.services.albumservice.AlbumService;
-import com.nilin.util.BusinessException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -32,7 +32,7 @@ public class AlbumController {
             service.createAlbum(album);
             return new ResponseEntity<String>(HttpStatus.CREATED);
         } catch (BusinessException e) {
-            return new ResponseEntity<>(e.getErrorMessage(), HttpStatus.valueOf(e.getStatus()));
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.valueOf(e.getStatus()));
         }
     }
 }
