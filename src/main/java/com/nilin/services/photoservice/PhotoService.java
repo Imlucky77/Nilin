@@ -1,12 +1,16 @@
 package com.nilin.services.photoservice;
 
+import com.nilin.model.Photo;
+
+import java.util.List;
+
 public interface PhotoService {
 
-/*    Photo save(Photo file);
+    Photo findById(String fileId);
 
-    Photo findById(String fileId);*/
+    List<Photo> findAll();
 
-    /*Photo findByName(String text);
+    Photo findAllById(Long id);
 
-    Photo findFirstByName(String text);*/
+    void deletePhotoById(Long id);
 }

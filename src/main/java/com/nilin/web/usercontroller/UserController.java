@@ -40,7 +40,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
     @GetMapping(value = "/users")
-    public ResponseEntity<?> listAllUsers() {
+    public ResponseEntity<?> getAllUsers() {
         try {
             List<User> allUsers = userService.findAllUsers();
             return new ResponseEntity<>(allUsers, HttpStatus.OK);

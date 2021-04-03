@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class PhotoServiceImpl implements PhotoService {
@@ -32,5 +33,25 @@ public class PhotoServiceImpl implements PhotoService {
         } catch (IOException ex) {
             throw new BusinessException("Could not store file " + fileName + ". Please try again!", ex);
         }
+    }
+
+    @Override
+    public Photo findById(String fileId) {
+        return null;
+    }
+
+    @Override
+    public List<Photo> findAll() {
+        return photoRepository.findAll();
+    }
+
+    @Override
+    public Photo findAllById(Long id) {
+        return photoRepository.findAllById(id);
+    }
+
+    @Override
+    public void deletePhotoById(Long id) {
+        photoRepository.deleteById(id);
     }
 }

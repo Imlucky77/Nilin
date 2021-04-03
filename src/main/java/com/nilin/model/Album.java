@@ -31,7 +31,7 @@ public class Album {
     @ApiModelProperty(notes = "The album created")
     private LocalDate created;
 
-    @ManyToOne
-    private User user;
+    /*@ManyToOne
+    private User user;*/
 
 }

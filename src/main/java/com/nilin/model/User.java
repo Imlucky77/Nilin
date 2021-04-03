@@ -34,12 +34,15 @@ public class User {
     @OneToMany
     private Set<Album> albums;
 
+    @OneToMany
+    private Set<Profile> profiles;
+
     public User(String name, String password) {
         this.username = name;
         this.password = password;
     }
 
-    public User(String s) {
-        this.username = s;
+    public User(String name) {
+        this.username = name;
     }
 }
