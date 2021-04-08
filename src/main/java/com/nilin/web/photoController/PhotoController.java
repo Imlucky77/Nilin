@@ -28,8 +28,8 @@ public class PhotoController {
     PhotoService service;
 
 
-    @PostMapping("/photos/upload")
-    public Photo uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping("/photos")
+    public Photo createPhoto(@RequestParam("file") MultipartFile file) throws IOException {
         Photo img = new Photo(file.getOriginalFilename(), file.getContentType(), file.getBytes());
         final Photo savedImage = photoRepository.save(img);
         return savedImage;
@@ -44,7 +44,7 @@ public class PhotoController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
     @GetMapping(value = "/photos")
-    public ResponseEntity<List<Photo>> getAllProfiles() {
+    public ResponseEntity<List<Photo>> getAllPhotos() {
         List<Photo> photos = service.findAll();
         if (photos.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -57,7 +57,7 @@ public class PhotoController {
     @GetMapping(value = "/photos/{photoId}")
     @Transactional
     public ResponseEntity<?> getPhotoById(@ApiParam(value = "Photo id from which photo object will retrieve", required = true)
-                                            @PathVariable("photoId") long id) {
+                                          @PathVariable("photoId") long id) {
         Photo photo = service.findAllById(id);
         if (photo == null) {
             return new ResponseEntity<>(new BusinessException("Photo with id " + id
@@ -70,7 +70,7 @@ public class PhotoController {
     @ApiOperation(value = "Delete a photo by Id")
     @DeleteMapping(value = "/photos/{photoId}")
     @Transactional
-    public ResponseEntity<?> deletePhotos(
+    public ResponseEntity<?> deletePhotoById(
             @ApiParam(value = "Photos Id from which photo object will delete from database table", required = true)
             @PathVariable("photoId") long id
     ) {

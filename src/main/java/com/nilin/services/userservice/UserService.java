@@ -3,6 +3,7 @@ package com.nilin.services.userservice;
 import com.nilin.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -13,7 +14,7 @@ public interface UserService {
 
     User findAllById(Long id);
 
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
 
     void deleteUserById(Long id);
 

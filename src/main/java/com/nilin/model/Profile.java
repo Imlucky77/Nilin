@@ -46,12 +46,4 @@ public class Profile {
     @Column(name = "PICTURE")
     @ApiModelProperty(notes = "The profile picture")
     private String pic;
-
-    public Profile(String firstName, String lastName, LocalDate birthday, String mobile, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthday = birthday;
-        this.mobile = mobile;
-        this.email = email;
-    }
 }
