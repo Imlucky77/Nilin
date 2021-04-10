@@ -38,13 +38,12 @@ public class SignUpRequest {
     @Size(min = 6, max = 40)
     private String password;
 
-    public SignUpRequest(String username,String email,  String firstName, String lastName,
-                         LocalDate birthday, String mobile, Set<String> role, String password) {
+    public SignUpRequest(String username, LocalDate birthday, String email, String firstName, String lastName, String mobile, Set<String> role, String password) {
         this.username = username;
+        this.birthday = birthday;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthday = birthday;
         this.mobile = mobile;
         this.role = role;
         this.password = password;

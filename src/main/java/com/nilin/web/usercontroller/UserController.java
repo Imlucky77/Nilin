@@ -78,7 +78,7 @@ public class UserController {
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        /*if (userRepository.existsByFirstName(signUpRequest.getFirstName())) {
+        if (userRepository.existsByFirstName(signUpRequest.getFirstName())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: FirstName is already in use!"));
@@ -91,25 +91,26 @@ public class UserController {
                     .body(new MessageResponse("Error: LastName is already in use!"));
         }
 
-
+        if (userRepository.existsByBirthday(signUpRequest.getBirthday())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Birthday is already in use!"));
+        }
         if (userRepository.existsByMobile(signUpRequest.getMobile())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Mobile is already in use!"));
         }
-
-
-        if (userRepository.existsByBirthday(signUpRequest.getBirthday())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: FirstName is already in use!"));
-        }*/
-
         // Create new user's account
         User user = new User(
                 signUpRequest.getUsername(),
+                signUpRequest.getBirthday(),
                 signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+                signUpRequest.getFirstName(),
+                signUpRequest.getLastName(),
+                encoder.encode(signUpRequest.getPassword()),
+                signUpRequest.getMobile()
+        );
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
@@ -164,11 +165,11 @@ public class UserController {
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
-                userDetails.getEmail(),
-                /*userDetails.getFirstName(),
-                userDetails.getLastName(),
                 userDetails.getBirthday(),
-                userDetails.getMobile(),*/
+                userDetails.getEmail(),
+                userDetails.getFirstName(),
+                userDetails.getLastName(),
+                userDetails.getMobile(),
                 roles));
     }
 

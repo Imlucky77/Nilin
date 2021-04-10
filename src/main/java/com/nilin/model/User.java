@@ -73,22 +73,16 @@ public class User {
     @ApiModelProperty(notes = "The roles")
     private Set<Role> roles = new HashSet<>();
 
-    public User(String username, String email, String password) {
+    public User(String username, LocalDate birthday, String email, String firstName, String lastName, String password, String mobile) {
         this.username = username;
+        this.birthday = birthday;
         this.email = email;
-        this.password = password;
-    }
-
-    /*public User(String firstName, String lastName, String username, String password,
-                LocalDate birthday, String mobile, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.username = username;
         this.password = password;
-        this.email = email;
-        this.birthday = birthday;
         this.mobile = mobile;
-    }*/
+    }
+
 /*@OneToMany(cascade = CascadeType.ALL)
     private Set<Photo> photos;
 
