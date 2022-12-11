@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Data
 @NoArgsConstructor
 @Table(name = "photo")
 @ApiModel(description = "All details about the Photo. ")
-public class Photo {
+public class Photo implements Serializable {
 
     @Id
     @GeneratedValue
@@ -32,6 +33,11 @@ public class Photo {
     public Photo(String name, String type, byte[] pic) {
         this.name = name;
         this.type = type;
+        this.pic = pic;
+    }
+
+    public Photo(String name, byte[] pic) {
+        this.name = name;
         this.pic = pic;
     }
 }
