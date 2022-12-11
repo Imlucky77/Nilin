@@ -46,7 +46,7 @@ public class User {
     @Column(name = "PASSWORD")
     @ApiModelProperty(notes = "The password")
     @JsonIgnore
-    @NotBlank
+    //@NotBlank
     @Size(max = 120)
     private String password;
 
@@ -82,15 +82,6 @@ public class User {
         this.password = password;
         this.mobile = mobile;
     }
-
-/*@OneToMany(cascade = CascadeType.ALL)
-    private Set<Photo> photos;
-
-    @OneToMany
-    private Set<Album> albums;
-
-    @OneToMany
-    private Set<Profile> profiles;*/
 
     public User(String name, String password) {
         this.username = name;
